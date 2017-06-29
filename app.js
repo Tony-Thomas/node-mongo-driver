@@ -13,7 +13,8 @@ mongoClient.connect(url, function(err, db){
     InsertDocument(db, function(){
         db.close();
     });
-
+    */
+    /*
     InsertDocuments(db, function(){
         db.close();
     });
@@ -22,6 +23,22 @@ mongoClient.connect(url, function(err, db){
     FindDocuments(db, function(){
         db.close();
     });
+    
+    /*
+    QueryDocuments(db, function(){
+        db.close();
+    });
+    */
+    /*
+    UpdateDocument(db, function(){
+        db.close();
+    });
+    */
+    /*
+    RemoveDocument(db, function(){
+        db.close();
+    });
+    */
 });
 
 //Insert Single Doc
@@ -68,7 +85,7 @@ const InsertDocuments = function(db, callback){
         callback(result);
     });
 };
-
+//Find documents
 const FindDocuments = function(db, callback){
     //Get collection
     const collection = db.collection('users');
@@ -80,5 +97,48 @@ const FindDocuments = function(db, callback){
         console.log("Found the following records");
         console.log(docs);
         callback(docs);
+    });
+};
+//Query documents
+const QueryDocuments = function(db, callback){
+    //Get collection
+    const collection = db.collection('users');
+
+    collection.find({'name':'John Doe'}).toArray(function(err, docs){
+        if(err){
+            return console.log(err);
+        }
+        console.log("Found the following records");
+        console.log(docs);
+        callback(docs);
+    });
+};
+//Update documents
+const UpdateDocument = function(db, callback){
+    //Get collection
+    const collection = db.collection('users');
+
+    collection.updateOne({name:'John Doe'},
+        {$set:{email:'john@somethingelse.com'}},
+        function(err, result){
+            if(err){
+                return console.log(err);
+            }
+            console.log("Updated Document");
+            callback(result);
+        });
+};
+//Remove Document
+const RemoveDocument = function(db, callback){
+    //Get collection
+    const collection = db.collection('users');
+
+    collection.deleteOne({name:'John Doe'}, function(err,result){
+        if(err){
+            return console.log(err);
+        }
+        console.log("Removed document");
+        console.log(result);
+        callback(result);
     });
 };
